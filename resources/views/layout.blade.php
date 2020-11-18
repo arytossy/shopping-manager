@@ -8,6 +8,10 @@
     </head>
     <body>
         
+        @foreach ($errors->all() as $error)
+            <p>{{ $error }}</p>
+        @endforeach
+        
         @include('components.header')
         
         <main class="container">
