@@ -28,13 +28,14 @@ class Thread extends Model
     
     /**
      * メンバー追加
-     * @reteurn integer 登録レコード数
+     * @param array $user_ids
+     * @return integer 登録レコード数
      */
-    public function add_members(...$user_ids) {
+    public function add_members($user_ids) {
         // 有効かつメンバー未登録のユーザーIDに絞り込み
-        $new_member_ids = array_unique(array_filter(function ($id) {
+        $new_member_ids = array_unique(array_filter($user_ids, function ($id) {
             return User::where('id', $id)->exists()
-                        && !$this->members()->where('id', $id)->exists();
+                        && !$this->members()->where('users.id', $id)->exists();
         }));
         
         // メンバー登録
@@ -53,7 +54,7 @@ class Thread extends Model
      */
     public function delete_member($user_id) {
         if (User::where('id', $user_id)->exists()
-                && $this->members()->where('id', $user_id)->exists()) {
+                && $this->members()->where('users.id', $user_id)->exists()) {
                     
             $this->members()->detach($user_id);
             return true;
