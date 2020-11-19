@@ -20,7 +20,19 @@ class Item extends Model
         return $this->belongsTo(Thread::class, 'thread_id');
     }
     public function users() {
-        return $this->belongsToMany(User::class, 'ordering', 'item_id', 'user_id');
+        return $this->belongsToMany(User::class, 'ordering', 'item_id', 'user_id')
+                        ->withPivot(['required_number'])
+                        ->withTimestamps();
+    }
+    
+    /**
+     * ほしい数の合計
+     * @return int
+     */
+    public function get_total() {
+        return (int) \DB::table('ordering')
+                        ->where('item_id', $this->id)
+                        ->sum('required_number');
     }
     
     /**

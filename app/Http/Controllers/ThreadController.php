@@ -34,11 +34,23 @@ class ThreadController extends Controller
         $thread_member_ids[] = \Auth::id();
         $new_thread->add_members($thread_member_ids);
         
-        return redirect()->route('threads.show');
+        return redirect()->route('threads.show', ['thread' => $new_thread->id]);
     }
     
     public function show($id) {
+        $thread = Thread::findOrFail($id);
+        $items = $thread->items;
+        $members = $thread->members;
+        $messages = $thread->messages;
+        $friends = \Auth::user()->friends()->get();
         
+        return view('threads.show', [
+            'thread' => $thread,
+            'items' => $items,
+            'members' => $members,
+            'messages' => $messages,
+            'friends' => $friends,
+        ]);
     }
     
     public function update($id, Request $request) {

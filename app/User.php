@@ -51,7 +51,9 @@ class User extends Authenticatable
         return $this->belongsToMany(Thread::class, 'membership', 'user_id', 'thread_id')->withTimestamps();
     }
     public function items() {
-        return $this->belongsToMany(Item::class, 'ordering', 'user_id', 'item_id')->withTimestamps();
+        return $this->belongsToMany(Item::class, 'ordering', 'user_id', 'item_id')
+                ->withPivot(['required_number'])
+                ->withTimestamps();
     }
     public function friendships__to() {
         return $this->belongsToMany(User::class, 'friendship', 'user_id', 'target_id')->withTimestamps();

@@ -34,12 +34,22 @@ Route::middleware(['auth'])->group(function () {
     // プロフィール
     Route::get('profile/edit', 'ProfileController@edit')->name('profile.edit');
     Route::put('profile/update', 'ProfileController@update')->name('profile.update');
-    // フレンド
+    // 友だち
     Route::prefix('friends')->group(function () {
         Route::get('index', 'FriendController@index')->name('friends.index');
         Route::post('add', 'FriendController@add')->name('friends.add');
         Route::post('accept', 'FriendController@accept')->name('friends.accept');
         Route::post('destroy', 'FriendController@destroy')->name('friends.destroy');
+    });
+    // メンバー
+    Route::prefix('members')->group(function () {
+        Route::post('add', 'MemberController@add')->name('members.add');
+        Route::post('destroy', 'MemberController@destroy')->name('members.destroy');
+    });
+    // オーダー
+    Route::prefix('orders')->group(function () {
+        Route::post('add', 'OrderController@add')->name('orders.add');
+        Route::post('destroy', 'OrderController@destroy')->name('orders.destroy');
     });
     // リソース
     Route::resource('threads', 'ThreadController')->only(['index', 'create', 'store', 'show', 'update']);

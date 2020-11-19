@@ -13,7 +13,7 @@ class FriendshipTableSeeder extends Seeder
     {
         for ($i = 1; $i <= App\User::all()->count(); $i++) {
             for ($j = $i + 1; $j <= App\User::all()->count(); $j++) {
-                if (rand(0,1)) {
+                if (rand(0,2)) {
                     DB::table('friendship')->insert([
                         'user_id' => $i,
                         'target_id' => $j,
