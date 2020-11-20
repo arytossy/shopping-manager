@@ -10,7 +10,7 @@ class Message extends Model
      * createメソッドを利用可能に
      */
     protected $fillable = [
-        'content', 'fhread_id', 'said_by',
+        'content', 'thread_id', 'said_by',
     ];
     
     /**

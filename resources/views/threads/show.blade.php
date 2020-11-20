@@ -166,7 +166,10 @@
             @foreach ($messages as $message)
                 <div class="row my-2">
                     @if (Auth::id() == $message->user->id)
-                        <div class="col">
+                        <div class="col d-flex justify-content-end mr-3">
+                            {!! Form::open(['route' => ['messages.destroy', $message->id], 'method' => 'delete']) !!}
+                                <button type="submit" class="btn-wrapper"><i class="fas fa-minus-circle text-danger"></i></button>
+                            {!! Form::close() !!}
                             <span class="mybubble">{{ $message->content }}</span>
                         </div>
                     @else
@@ -188,6 +191,7 @@
     <div id="messageSender">
         {!! Form::open(['route' => 'messages.store', 'class' => 'd-flex']) !!}
             {!! Form::textarea('content', null, ['rows' => 1]) !!}
+            {!! Form::hidden('thread_id', $thread->id) !!}
             <button type="submit" class="btn btn-primary btn-sm"><i class="fas fa-paper-plane"></i></button>
         {!! Form::close() !!}
     </div>
@@ -232,6 +236,7 @@
         background-color: #eee;
         border-radius: 5px;
         padding: 0 5px;
+        white-space: pre-wrap;
     }
     
     .bubble::before {
@@ -242,15 +247,15 @@
         border-right: 7px solid #eee;
         border-top: 2px solid transparent;
         border-bottom: 3px solid transparent;
-        transform: translate(-12px, 5px)
+        transform: translate(-12px, 5px);
     }
     
     .mybubble {
         display: inline-block;
-        float: right;
         background-color: #6e6;
         border-radius: 5px;
         padding: 0 5px;
+        white-space: pre-wrap;
     }
     
     .mybubble::after {
@@ -259,9 +264,9 @@
         width: 0;
         height: 0;
         border-left: 7px solid #6e6;
-        border-top: 2px solid transparent;
-        border-bottom: 3px solid transparent;
-        transform: translate(5px, 5px)
+        border-top: 3px solid transparent;
+        border-bottom: 2px solid transparent;
+        transform: translate(4px, 15px);
     }
     
     #messageSender{
