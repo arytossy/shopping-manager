@@ -8,7 +8,9 @@
                 <a data-toggle="collapse" href="#detailContent">
                     {{ $thread->title }}
                 </a>
-                <a href=""><i class="fas fa-edit"></i></a>
+                <a data-toggle="modal" href="#threadEditDialog">
+                    <i class="fas fa-edit"></i>
+                </a>
             </div>
         </div>
         <div class="collapse" id="detailContent">
@@ -18,7 +20,7 @@
             </div>
             <div class="row border-bottom py-1">
                 <div class="col-4 font-weight-bold">日時</div>
-                <div class="col-8">{{ date_create($thread->when_go)->format('Y/m/d H:i') }}</div>
+                <div class="col-8">{{ date_create($thread->when_go)->format('Y/m/d') }}</div>
             </div>
             <div class="row border-bottom py-1">
                 <div class="col-4 font-weight-bold">メンバー</div>
@@ -56,7 +58,7 @@
                 <div class="col-2">{{ $item->get_total() }}</div>
                 <div class="col-2"><a href="">{{ $item->bought_number }}</a></div>
             </div>
-            <div class="collapse" id="orders{{ $item->id }}">
+            <div class="collapse overflow-auto" id="orders{{ $item->id }}">
                 @if ($item->is_shared)
                     <div class="row py-1">
                         <div class="col-1">
@@ -103,24 +105,25 @@
     </section>
     
     <section id="chatArea">
-        @foreach ($messages as $message)
-            <div class="row my-2">
-                @if (Auth::id() == $message->user->id)
-                    <div class="col">
-                        <span class="mybubble">{{ $message->content }}</span>
-                    </div>
-                @else
-                    <div class="col d-flex">
-                        <img width="30" height="30" src="{{ $message->user->avatar }}">
-                        <div class="ml-2">
-                            <span class="said_by">{{ $message->user->name }}</span>
-                            <span class="bubble">{{ $message->content }}</span>
+        <div id="chatScrollInner">
+            @foreach ($messages as $message)
+                <div class="row my-2">
+                    @if (Auth::id() == $message->user->id)
+                        <div class="col">
+                            <span class="mybubble">{{ $message->content }}</span>
                         </div>
-                    </div>
-                @endif
-                
-            </div>
-        @endforeach
+                    @else
+                        <div class="col d-flex">
+                            <img width="30" height="30" src="{{ $message->user->avatar }}">
+                            <div class="ml-2">
+                                <span class="said_by">{{ $message->user->name }}</span>
+                                <span class="bubble">{{ $message->content }}</span>
+                            </div>
+                        </div>
+                    @endif
+                </div>
+            @endforeach
+        </div>
     </section>
     
     <div id="messageSender">
@@ -129,6 +132,10 @@
             <button type="submit" class="btn btn-primary btn-sm"><i class="fas fa-paper-plane"></i></button>
         {!! Form::close() !!}
     </div>
+    
+    <!--以下モーダルダイアログ-->
+    
+    @include('modals.thread_edit')
 
 @endsection
 
@@ -144,6 +151,11 @@
         font-weight: bold;
         border-bottom: 5px double #ccc;
         padding: 5px 0;
+    }
+    
+    #chatArea {
+        height: 50vh;
+        overflow: hidden scroll;
     }
     
     .said_by {
@@ -199,4 +211,8 @@
         background-color: transparent;
     }
     
+@endsection
+
+@section('script')
+    document.getElementById('chatScrollInner').scrollIntoView(false);
 @endsection

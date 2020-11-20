@@ -3,16 +3,16 @@
 @section('top.content')
     
     @foreach ($threads as $thread)
-        <a class="h5" href="{{ route('threads.show', ['thread' => $thread->id]) }}">{{ $thread->title }}</a>
+        <a class="h4" href="{{ route('threads.show', ['thread' => $thread->id]) }}">{{ $thread->title }}</a>
         <div class="d-flex justify-content-between text-muted">
             <span>
                 @if ($thread->where_go)
-                    ＠{{ $thread->where_go }}
+                    <i class="fas fa-store"></i> {{ $thread->where_go }}
                 @endif
             </span>
             <span>
                 @if ($thread->when_go)
-                    {{ date_create($thread->when_go)->format('Y/m/d H:i') }}
+                    <i class="fas fa-clock"></i> {{ date_create($thread->when_go)->format('Y/m/d') }}
                 @endif
             </span>
             

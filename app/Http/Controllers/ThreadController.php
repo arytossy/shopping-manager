@@ -54,6 +54,13 @@ class ThreadController extends Controller
     }
     
     public function update($id, Request $request) {
+        $thread = Thread::findOrFail($id);
+        $thread->title = $request->title;
+        $thread->where_go = $request->where_go;
+        $thread->when_go = $request->when_go;
         
+        $thread->save();
+        
+        return back();
     }
 }
