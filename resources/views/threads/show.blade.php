@@ -6,10 +6,12 @@
     <section id="threadDetail">
         
         <div id="threadDetailHeader" class="row">
-            <div class="col d-flex justify-content-between">
+            <div class="col-10">
                 <a data-toggle="collapse" href="#detailContent">
                     {{ $thread->title }}
                 </a>
+            </div>
+            <div class="col-2">
                 {{-- スレッド詳細編集アイコン --}}
                 <a data-toggle="modal" href="#threadEditDialog">
                     <i class="fas fa-edit"></i>
@@ -28,18 +30,24 @@
             </div>
             <div class="row border-bottom py-1">
                 <div class="col-4 font-weight-bold">メンバー</div>
-                <div class="col-8">
+                <div class="col-6">
                     @foreach ($members as $member)
                         <div>
                             {{-- 除名アイコン --}}
                             {!! Form::open(['route' => 'members.destroy', 'class' => 'd-inline-block']) !!}
-                                {!! Form::hidden('target_id', $member->id) !!}
+                                {!! Form::hidden('thread_id', $thread->id) !!}
+                                {!! Form::hidden('user_id', $member->id) !!}
                                 <button type="submit" class="btn-wrapper"><i class="fas fa-minus-circle text-danger"></i></button>
                             {!! Form::close() !!}
                             <img width="30" height="30" src="{{ $member->avatar }}">
                             <span>{{ $member->name }}</span>
                         </div>
                     @endforeach
+                </div>
+                <div class="col-2">
+                    <a data-toggle="modal" href="#memberAddDialog">
+                        <i class="fas fa-user-plus"></i>
+                    </a>
                 </div>
             </div>
         </div>
@@ -207,6 +215,7 @@
     @include('modals.item_update')
     @include('modals.order_add')
     @include('modals.order_change')
+    @include('modals.member_add')
 
 @endsection
 

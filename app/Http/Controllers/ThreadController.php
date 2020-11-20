@@ -43,13 +43,14 @@ class ThreadController extends Controller
         $members = $thread->members;
         $messages = $thread->messages;
         $friends = \Auth::user()->friends()->get();
+        $not_member_friends = $friends->except($members->modelKeys());
         
         return view('threads.show', [
             'thread' => $thread,
             'items' => $items,
             'members' => $members,
             'messages' => $messages,
-            'friends' => $friends,
+            'not_member_friends' => $not_member_friends,
         ]);
     }
     
