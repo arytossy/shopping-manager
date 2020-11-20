@@ -30,6 +30,9 @@ class ItemController extends Controller
     }
     
     public function destroy($id) {
+        $item = Item::findOrfail($id);
+        $item->delete();
         
+        return back();
     }
 }
