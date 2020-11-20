@@ -2,7 +2,7 @@
 
 @section('content')
 
-    @include('components.profile')
+    @include('parts.profile')
     
     <ul class="nav nav-tabs nav-fill">
         <li class="nav-item">

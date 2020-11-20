@@ -1,18 +1,22 @@
 @extends('layouts.app')
 
 @section('content')
-
+    
+    {{-- スレッド詳細情報 --}}
     <section id="threadDetail">
+        
         <div id="threadDetailHeader" class="row">
             <div class="col d-flex justify-content-between">
                 <a data-toggle="collapse" href="#detailContent">
                     {{ $thread->title }}
                 </a>
+                {{-- スレッド詳細編集アイコン --}}
                 <a data-toggle="modal" href="#threadEditDialog">
                     <i class="fas fa-edit"></i>
                 </a>
             </div>
         </div>
+        
         <div class="collapse" id="detailContent">
             <div class="row border-bottom py-1">
                 <div class="col-4 font-weight-bold">場所</div>
@@ -27,6 +31,7 @@
                 <div class="col-8">
                     @foreach ($members as $member)
                         <div>
+                            {{-- 除名アイコン --}}
                             {!! Form::open(['route' => 'members.destroy', 'class' => 'd-inline-block']) !!}
                                 {!! Form::hidden('target_id', $member->id) !!}
                                 <button type="submit" class="btn-wrapper"><i class="fas fa-minus-circle text-danger"></i></button>
@@ -38,11 +43,17 @@
                 </div>
             </div>
         </div>
+        
     </section>
     
+    
+    {{-- 買うものリスト --}}
     <section id="itemList">
+        
+        {{-- ヘッダ --}}
         <div id="itemListHeader" class="row">
             <div class="col-1">
+                {{-- 買うもの追加アイコン --}}
                 <a data-toggle="modal" href="#itemCreateDialog">
                     <i class="fas fa-plus-circle text-success"></i>
                 </a>
@@ -51,46 +62,76 @@
             <div class="col-2">必要</div>
             <div class="col-2">購入</div>
         </div>
+        
+        {{-- リスト --}}
         @foreach ($items as $item)
             <div class="row border-bottom py-1">
                 <div class="col-1"><input type="checkbox"></div>
                 <div class="col-7">
+                    {{-- 品目名をタップすると頼んだ人一覧が表示される --}}
                     <a data-toggle="collapse" href="#orders{{ $item->id }}">
                         {{ $item->name }}
                     </a>
                 </div>
                 <div class="col-2">{{ $item->get_total() }}</div>
-                <div class="col-2"><a href="">{{ $item->bought_number }}</a></div>
+                <div class="col-2">
+                    {{-- 購入数の数字をタップすると購入数変更ダイアログが表示される --}}
+                    {{-- @attr data-url => フォームのactionを分岐させるためにURLを生成 --}}
+                    <a data-toggle="modal" data-url="{{ route('items.update', ['item' => $item->id]) }}" href="#itemUpdateDialog">
+                        {{ $item->bought_number }}
+                    </a>
+                </div>
             </div>
+            
+            {{-- 頼んだ人一覧 --}}
             <div class="collapse" id="orders{{ $item->id }}">
+                
+                {{-- 「みんなでシェア」の場合は誰でも削除、必要数変更できる --}}
                 @if ($item->is_shared)
                     <div class="row py-1">
                         <div class="col-1">
+                            {{-- 買うもの削除アイコン --}}
                             {!! Form::open(['route' => ['items.destroy', 'item' => $item->id], 'method' => 'delete']) !!}
                                 <button type="submit" class="btn-wrapper"><i class="fas fa-minus-circle text-danger"></i></button>
                             {!! Form::close() !!}
                         </div>
                         <div class="col-7">みんなでシェア</div>
-                        <div class="col-2"><a href="">{{ $item->get_total() }}</a></div>
+                        <div class="col-2">
+                            {{-- 必要数をタップすると必要数変更ダイアログが表示される --}}
+                            <a href="">
+                                {{ $item->get_total() }}
+                            </a>
+                        </div>
+                        {{-- 空白（購入数列） --}}
                         <div class="col-2"></div>
                     </div>
+                    
+                {{-- 個人的なオーダー --}}
                 @else
+                    {{-- 自分が既にオーダーしているかどうかのフラグ --}}
                     <?php $have_ordered = false ?>
+                    
                     @foreach ($item->users as $orderer)
                         <div class="row">
                             <div class="col-1">
-                                {!! Form::open(['route' => 'orders.destroy']) !!}
-                                    {!! Form::hidden('target_id', $orderer->id) !!}
-                                    <button type="submit" class="btn-wrapper"><i class="fas fa-minus-circle text-danger"></i></button>
-                                {!! Form::close() !!}
+                                {{-- 自分が頼んだ場合はオーダーを取り消せる --}}
+                                @if (Auth::id() == $orderer->id)
+                                    {!! Form::open(['route' => 'orders.destroy']) !!}
+                                        {!! Form::hidden('target_id', $orderer->id) !!}
+                                        <button type="submit" class="btn-wrapper"><i class="fas fa-minus-circle text-danger"></i></button>
+                                    {!! Form::close() !!}
+                                @endif
                             </div>
                             <div class="col-7">
                                 <img width="30" height="30" src="{{ $orderer->avatar }}">
                                 <span>{{ $orderer->name }}</span>
                             </div>
                             <div class="col-2">
+                                {{-- 自分が頼んだ場合は必要数を変更できる --}}
                                 @if (Auth::id() == $orderer->id)
-                                    <a href="">{{ $orderer->pivot->required_number }}</a>
+                                    <a href="">
+                                        {{ $orderer->pivot->required_number }}
+                                    </a>
                                     <?php $have_ordered = true ?>
                                 @else
                                     {{ $orderer->pivot->required_number }}
@@ -99,6 +140,7 @@
                             <div class="col-2"></div>
                         </div>
                     @endforeach
+                    {{-- まだ自分が頼んでいなければ、便乗アイコンを表示 --}}
                     @if (! $have_ordered)
                         <div class="row py-1">
                             <div class="offset-1 col-7">
@@ -106,13 +148,20 @@
                             </div>
                         </div>
                     @endif
+                    
                 @endif
+                
+                {{-- 境界線 --}}
                 <div class="row border-bottom"></div>
+                
             </div>
         @endforeach
     </section>
     
+    
+    {{-- チャットエリア（メッセージが多い場合はスクロール表示） --}}
     <section id="chatArea">
+        {{-- このページ表示時のデフォルトスクロール位置を一番下にするためのラッパ --}}
         <div id="chatScrollInner">
             @foreach ($messages as $message)
                 <div class="row my-2">
@@ -134,6 +183,8 @@
         </div>
     </section>
     
+    
+    {{-- チャットメッセージ投稿用フォーム（画面下にstickyで常設） --}}
     <div id="messageSender">
         {!! Form::open(['route' => 'messages.store', 'class' => 'd-flex']) !!}
             {!! Form::textarea('content', null, ['rows' => 1]) !!}
@@ -141,14 +192,16 @@
         {!! Form::close() !!}
     </div>
     
-    <!--以下モーダルダイアログ-->
     
+    {{-- 以下モーダルダイアログ--}}
     @include('modals.thread_edit')
-    
     @include('modals.item_create')
+    @include('modals.item_update')
 
 @endsection
 
+
+{{-- このページ固有スタイル --}}
 @section('style')
 
     #threadDetailHeader {
@@ -223,6 +276,24 @@
     
 @endsection
 
+
+{{-- このページ固有js --}}
 @section('script')
-    document.getElementById('chatScrollInner').scrollIntoView(false);
+
+    // チャット内容のスクロールを一番下に
+    $('#chatScrollInner').get(0).scrollIntoView(false);
+    
+    // トグラによってモーダルダイアログの内容を分岐させる
+    //　詳しくはBootstrapのドキュメントのComponents->Modal->Varying modal contentを参照
+    $('#itemUpdateDialog').on('show.bs.modal', function (event) {
+        var toggler = $(event.relatedTarget);
+        var url = toggler.data('url');
+        var boughtNumber = toggler.text();
+        
+        console.log(boughtNumber);
+        
+        var modal = $(this);
+        modal.find('form').attr('action', url);
+        modal.find('input[name="bought_number"]').val(parseInt(boughtNumber));
+    });
 @endsection

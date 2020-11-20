@@ -1,4 +1,4 @@
-@component('layouts.modal')
+@component('components.modal')
 
     @slot('modal_name') threadEdit @endslot
     

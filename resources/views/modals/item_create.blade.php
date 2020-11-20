@@ -1,8 +1,8 @@
-@component('layouts.modal')
+@component('components.modal')
 
     @slot('modal_name') itemCreate @endslot
     
-    @slot('modal_title') ほしいもの追加 @endslot
+    @slot('modal_title') 買うもの追加 @endslot
     
     @slot('go_text') 追加 @endslot
     
