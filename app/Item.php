@@ -10,7 +10,7 @@ class Item extends Model
      * createメソッドを利用可能に
      */
     protected $fillable = [
-        'name', 'is_shared', 'bought_number',
+        'name', 'is_shared', 'bought_number', 'thread_id',
     ];
     
     /**

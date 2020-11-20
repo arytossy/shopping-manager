@@ -42,7 +42,11 @@
     
     <section id="itemList">
         <div id="itemListHeader" class="row">
-            <div class="col-1"><a href=""><i class="fas fa-plus-circle text-success"></i></a></div>
+            <div class="col-1">
+                <a data-toggle="modal" href="#itemCreateDialog">
+                    <i class="fas fa-plus-circle text-success"></i>
+                </a>
+            </div>
             <div class="col-7">買うもの</div>
             <div class="col-2">必要</div>
             <div class="col-2">購入</div>
@@ -58,7 +62,7 @@
                 <div class="col-2">{{ $item->get_total() }}</div>
                 <div class="col-2"><a href="">{{ $item->bought_number }}</a></div>
             </div>
-            <div class="collapse overflow-auto" id="orders{{ $item->id }}">
+            <div class="collapse" id="orders{{ $item->id }}">
                 @if ($item->is_shared)
                     <div class="row py-1">
                         <div class="col-1">
@@ -71,6 +75,7 @@
                         <div class="col-2"></div>
                     </div>
                 @else
+                    <?php $have_ordered = false ?>
                     @foreach ($item->users as $orderer)
                         <div class="row">
                             <div class="col-1">
@@ -86,6 +91,7 @@
                             <div class="col-2">
                                 @if (Auth::id() == $orderer->id)
                                     <a href="">{{ $orderer->pivot->required_number }}</a>
+                                    <?php $have_ordered = true ?>
                                 @else
                                     {{ $orderer->pivot->required_number }}
                                 @endif
@@ -93,11 +99,13 @@
                             <div class="col-2"></div>
                         </div>
                     @endforeach
-                    <div class="row py-1">
-                        <div class="offset-1 col-7">
-                            <a href=""><i class="fas fa-plus-circle text-success"></i> 自分も欲しい！</a>
+                    @if (! $have_ordered)
+                        <div class="row py-1">
+                            <div class="offset-1 col-7">
+                                <a href=""><i class="fas fa-plus-circle text-success"></i> 自分も欲しい！</a>
+                            </div>
                         </div>
-                    </div>
+                    @endif
                 @endif
                 <div class="row border-bottom"></div>
             </div>
@@ -136,6 +144,8 @@
     <!--以下モーダルダイアログ-->
     
     @include('modals.thread_edit')
+    
+    @include('modals.item_create')
 
 @endsection
 
