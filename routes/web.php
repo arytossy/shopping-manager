@@ -49,6 +49,7 @@ Route::middleware(['auth'])->group(function () {
     // オーダー
     Route::prefix('orders')->group(function () {
         Route::post('add', 'OrderController@add')->name('orders.add');
+        Route::post('change', 'OrderController@change')->name('orders.change');
         Route::post('destroy', 'OrderController@destroy')->name('orders.destroy');
     });
     // リソース

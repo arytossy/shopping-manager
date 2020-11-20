@@ -98,7 +98,7 @@
                         <div class="col-7">みんなでシェア</div>
                         <div class="col-2">
                             {{-- 必要数をタップすると必要数変更ダイアログが表示される --}}
-                            <a href="">
+                            <a data-toggle="modal" data-item="{{ $item->id }}" href="#orderChangeDialog">
                                 {{ $item->get_total() }}
                             </a>
                         </div>
@@ -117,7 +117,7 @@
                                 {{-- 自分が頼んだ場合はオーダーを取り消せる --}}
                                 @if (Auth::id() == $orderer->id)
                                     {!! Form::open(['route' => 'orders.destroy']) !!}
-                                        {!! Form::hidden('target_id', $orderer->id) !!}
+                                        {!! Form::hidden('item_id', $item->id) !!}
                                         <button type="submit" class="btn-wrapper"><i class="fas fa-minus-circle text-danger"></i></button>
                                     {!! Form::close() !!}
                                 @endif
@@ -129,7 +129,8 @@
                             <div class="col-2">
                                 {{-- 自分が頼んだ場合は必要数を変更できる --}}
                                 @if (Auth::id() == $orderer->id)
-                                    <a href="">
+                                    {{-- @attr data-item => フォームで対象品目IDをセットするため --}}
+                                    <a data-toggle="modal" data-item="{{ $item->id }}" href="#orderChangeDialog">
                                         {{ $orderer->pivot->required_number }}
                                     </a>
                                     <?php $have_ordered = true ?>
@@ -144,7 +145,10 @@
                     @if (! $have_ordered)
                         <div class="row py-1">
                             <div class="offset-1 col-7">
-                                <a href=""><i class="fas fa-plus-circle text-success"></i> 自分も欲しい！</a>
+                                {{-- @attr data-item => フォームで対象品目IDをセットするため --}}
+                                <a data-toggle="modal" data-item="{{ $item->id }}" href="#orderAddDialog">
+                                    <i class="fas fa-plus-circle text-success"></i> 自分も欲しい！
+                                </a>
                             </div>
                         </div>
                     @endif
@@ -201,6 +205,8 @@
     @include('modals.thread_edit')
     @include('modals.item_create')
     @include('modals.item_update')
+    @include('modals.order_add')
+    @include('modals.order_change')
 
 @endsection
 
@@ -293,12 +299,28 @@
     $('#itemUpdateDialog').on('show.bs.modal', function (event) {
         var toggler = $(event.relatedTarget);
         var url = toggler.data('url');
-        var boughtNumber = toggler.text();
-        
-        console.log(boughtNumber);
+        var boughtNumber = parseInt(toggler.text());
         
         var modal = $(this);
         modal.find('form').attr('action', url);
-        modal.find('input[name="bought_number"]').val(parseInt(boughtNumber));
+        modal.find('input[name="bought_number"]').val(boughtNumber);
+    });
+    
+    $('#orderAddDialog').on('show.bs.modal', function (event) {
+        var toggler = $(event.relatedTarget);
+        var itemId = toggler.data('item');
+        
+        var modal = $(this);
+        modal.find('input[name="item_id"]').val(itemId);
+    });
+    
+    $('#orderChangeDialog').on('show.bs.modal', function (event) {
+        var toggler = $(event.relatedTarget);
+        var itemId = toggler.data('item');
+        var requiredNumber = parseInt(toggler.text());
+        
+        var modal = $(this);
+        modal.find('input[name="item_id"]').val(itemId);
+        modal.find('input[name="required_number"]').val(requiredNumber);
     });
 @endsection

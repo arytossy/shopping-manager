@@ -39,11 +39,11 @@ class Item extends Model
      * 他のユーザーが頼んだものに便乗
      * @return boolean
      */
-    public function add_order_by($user_id) {
+    public function add_order_by($user_id, $required_number) {
         if ($this->users()->where('users.id', $user_id)->exists()) {
             return false;
         } else {
-            $this->users()->attach($user_id, ['required_number' => 1]);
+            $this->users()->attach($user_id, ['required_number' => $required_number]);
             return true;
         }
     }
@@ -55,6 +55,10 @@ class Item extends Model
     public function cancel_order_by($user_id) {
         if ($this->users()->where('users.id', $user_id)->exists()) {
             $this->users()->detach($user_id);
+            // 最後の一人だった場合はItem自体も削除
+            if ($this->users()->count() == 0) {
+                $this->delete();
+            }
             return true;
         } else {
             return false;
@@ -66,11 +70,36 @@ class Item extends Model
      * @return boolean
      */
     public function change_required_number($number, $user_id) {
+        
+        // 既にこのユーザーは頼んでいて、、、
         if ($this->users()->where('users.id', $user_id)->exists()) {
-            return false;
+            
+            // 「みんなでシェア」の場合は
+            if ($this->is_shared) {
+                $increment = $number - $this->get_total();
+                $new_number = $this->users()->find($user_id)->pivot->required_number + $increment;
+                $this->users()->updateExistingPivot($user_id, ['required_number' => $new_number]);
+                return true;
+                
+            // 個人的なオーダーの場合は
+            } else {
+                $this->users()->updateExistingPivot($user_id, ['required_number' => $number]);
+                return true;
+            }
+            
+        // まだこのユーザーは頼んでいなくて、、、
         } else {
-            $this->users()->updateExistingPivot($user_id, ['required_number' => $number]);
-            return true;
+            
+            //　「みんなでシェア」の場合は
+            if ($this->is_shared) {
+                $increment = $number - $this->get_total();
+                $this->users()->attach($user_id, ['required_number' => $increment]);
+                return true;
+                
+            // 個人的なオーダーの場合は
+            } else {
+                return false;
+            }
         }
     }
 }
