@@ -2,7 +2,7 @@
 
 @section('content')
 
-    <h2>プロフィール編集</h2>
+    <h2 class="my-4">プロフィール編集</h2>
     
     {!! Form::model(Auth::user(), ['route' => 'profile.update', 'method' => 'put']) !!}
         <div class="form-group">
@@ -19,7 +19,7 @@
             {!! Form::file('avatar', ['class' => 'form-control']) !!}
         </div>
         --}}
-        {!! Form::submit('更新', ['class' => 'btn btn-success btn-block']) !!}
+        {!! Form::submit('更新', ['class' => 'btn btn-success btn-block mt-4']) !!}
     {!! Form::close() !!}
 
 @endsection

@@ -2,7 +2,7 @@
 
 @section('content')
 
-    <h2>ユーザー登録</h2>
+    <h2 class="my-4">ユーザー登録</h2>
     
     {!! Form::open(['route' => 'register.post', 'files' => true]) !!}
         <div class="form-group">
@@ -27,7 +27,7 @@
             {!! Form::file('avatar', ['class' => 'form-control']) !!}
         </div>
         --}}
-        {!! Form::submit('登録', ['class' => 'btn btn-primary btn-block']) !!}
+        {!! Form::submit('登録', ['class' => 'btn btn-primary btn-block mt-4']) !!}
     {!! Form::close() !!}
 
 @endsection

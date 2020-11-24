@@ -1,8 +1,11 @@
 @extends('layouts.app')
 
 @section('content')
-
-    @include('parts.profile')
+    
+    <div class="my-4 ml-5">
+        @include('parts.profile')
+    </div>
+    
     
     <ul class="nav nav-tabs nav-fill">
         <li class="nav-item">
@@ -16,7 +19,7 @@
         </li>
     </ul>
     
-    <div>
+    <div class="mt-3">
         @yield('top.content')
     </div>
 

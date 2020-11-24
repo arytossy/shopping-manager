@@ -18,7 +18,7 @@
         <div class="form-group">
             <h5>メンバー</h5>
             @foreach ($friends as $friend)
-                <div class="form-check">
+                <div class="form-check mt-1 ml-3">
                     <label class="form-check-label">
                         {!! Form::checkbox('members[]', $friend->id, false, ['class' => 'form-check-input']) !!}
                         <img width="30" height="30" src="{{ $friend->avatar }}">

@@ -24,7 +24,7 @@ class ThreadController extends Controller
     public function store(Request $request) {
         $request->validate([
             'title' => 'required | max:255',
-            'where_go' => 'nullable | max::255',
+            'where_go' => 'nullable | max:255',
             'when_go' => 'nullable | date',
             'members' => 'nullable | array'
         ]);
@@ -35,8 +35,10 @@ class ThreadController extends Controller
             'when_go' => $request->when_go,
         ]);
         
-        foreach ($request->members as $val) {
-            $thread_member_ids[] = (int) $val;
+        if ($request->members != null) {
+            foreach ($request->members as $val) {
+                $thread_member_ids[] = (int) $val;
+            }
         }
         $thread_member_ids[] = \Auth::id();
         $new_thread->add_members($thread_member_ids);

@@ -173,9 +173,9 @@
     
     
     {{-- チャットエリア（メッセージが多い場合はスクロール表示） --}}
-    <section id="chatArea">
+    <section id="chatArea" class="row py-3">
         {{-- このページ表示時のデフォルトスクロール位置を一番下にするためのラッパ --}}
-        <div id="chatScrollInner">
+        <div id="chatScrollInner" class="col">
             @foreach ($messages as $message)
                 <div class="row my-2">
                     @if (Auth::id() == $message->user->id)
@@ -198,7 +198,6 @@
             @endforeach
         </div>
     </section>
-    
     
     {{-- チャットメッセージ投稿用フォーム（画面下にstickyで常設） --}}
     <div id="messageSender">
@@ -226,7 +225,7 @@
 
     #threadDetailHeader {
         background-color: #eee;
-        padding: 5px 0;
+        padding: 10px 0;
         font-weight: bold;
     }
     
@@ -239,6 +238,7 @@
     #chatArea {
         height: 50vh;
         overflow: hidden scroll;
+        background-color: #eff;
     }
     
     .said_by {

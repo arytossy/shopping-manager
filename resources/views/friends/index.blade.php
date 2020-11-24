@@ -3,9 +3,9 @@
 @section('top.content')
 
     <div class="row">
-        <div class="col-10">
+        <div class="offset-1 col-9">
             @foreach ($friends as $friend)
-                <div>
+                <div class="mt-1">
                     {!! Form::open(['route' => 'friends.destroy', 'class' => 'd-inline-block']) !!}
                         {!! Form::hidden('user_id', $friend->id) !!}
                         <button type="submit" class="btn-wrapper"><i class="fas fa-minus-circle text-danger"></i></button>
@@ -22,7 +22,7 @@
         </div>
     </div>
     
-    <div class="row">
+    <div class="row mt-3">
         <div class="col">
             <div class="card">
                 <div class="card-header">

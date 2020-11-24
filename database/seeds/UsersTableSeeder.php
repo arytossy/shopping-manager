@@ -16,7 +16,7 @@ class UsersTableSeeder extends Seeder
                 'name' => 'sample-' . $i,
                 'email' => 'sample-' . $i . '@test.com',
                 'password' => Hash::make('password'),
-                'avatar' => 'image-url',
+                'avatar' => '/images/default-avatar.png',
             ]);    
         }
     }

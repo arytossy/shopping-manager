@@ -1,10 +1,6 @@
-<footer class="bg-secondary text-white">
-    <nav class="nav text-white-50">
-        <a class="nav-link">リンク</a>
-        <span>|</span>
-        <a class="nav-link">リンク</a>
-        <span>|</span>
-        <a class="nav-link">リンク</a>
+<footer class="bg-secondary mt-5 py-3">
+    <nav class="nav">
+        <a class="nav-link text-white-50" href="/">トップ</a>
     </nav>
-    <small>©arytossy</small>
+    <small class="ml-3 text-white">©arytossy</small>
 </footer>

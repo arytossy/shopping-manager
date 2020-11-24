@@ -2,7 +2,7 @@
 
 @section('content')
 
-    <h2>ログイン</h2>
+    <h2 class="my-4">ログイン</h2>
     
     {!! Form::open(['route' => 'login.post']) !!}
         <div class="form-group">
@@ -13,7 +13,7 @@
             {!! Form::label('password', 'パスワード') !!}
             {!! Form::password('password', ['class' => 'form-control', 'required' => true]) !!}
         </div>
-        {!! Form::submit('ログイン', ['class' => 'btn btn-primary btn-block']) !!}
+        {!! Form::submit('ログイン', ['class' => 'btn btn-primary btn-block mt-4']) !!}
     {!! Form::close() !!}
 
 @endsection
