@@ -45,6 +45,7 @@
                     @endforeach
                 </div>
                 <div class="col-2">
+                    {{-- メンバー追加アイコン --}}
                     <a data-toggle="modal" href="#memberAddDialog">
                         <i class="fas fa-user-plus"></i>
                     </a>
@@ -287,11 +288,6 @@
     #messageSender{
         position: sticky;
         bottom: 0;
-    }
-    
-    .btn-wrapper {
-        border: none;
-        background-color: transparent;
     }
     
 @endsection
