@@ -26,6 +26,10 @@ class FriendController extends Controller
     }
     
     public function add(Request $request) {
+        $request->validate([
+            'friends' => 'required | array',
+        ]);
+        
         foreach ($request->friends as $str_id) {
             \Auth::user()->send_request_to((int) $str_id);
         }
@@ -34,12 +38,20 @@ class FriendController extends Controller
     }
     
     public function accept(Request $request) {
+        $request->validate([
+            'user_id' => 'required',
+        ]);
+        
         \Auth::user()->accept_request_from($request->user_id);
         
         return back();
     }
     
     public function destroy(Request $request) {
+        $request->validate([
+            'user_id' => 'required',
+        ]);
+        
         \Auth::user()->delete_friendship($request->user_id);
         
         return back();

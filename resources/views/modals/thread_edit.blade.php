@@ -11,7 +11,7 @@
                                 'id' => 'threadEditForm']) !!}
         <div class="form-group">
             {!! Form::label('title', 'タイトル') !!}
-            {!! Form::text('title', null, ['class' => 'form-control']) !!}
+            {!! Form::text('title', null, ['class' => 'form-control', 'required' => true]) !!}
         </div>
         <div class="form-group">
             {!! Form::label('where_go', '場所') !!}

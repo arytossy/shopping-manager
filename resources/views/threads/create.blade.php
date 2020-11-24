@@ -5,7 +5,7 @@
     {!! Form::open(['route' => 'threads.store']) !!}
         <div class="form-group">
             {!! Form::label('title', 'タイトル') !!}
-            {!! Form::text('title', old('title'), ['class' => 'form-control']) !!}
+            {!! Form::text('title', old('title'), ['class' => 'form-control', 'required' => true]) !!}
         </div>
         <div class="form-group">
             {!! Form::label('where_go', '場所') !!}
@@ -13,7 +13,7 @@
         </div>
         <div class="form-group">
             {!! Form::label('when_go', '日時') !!}
-            {!! Form::text('when_go', old('when_go'), ['class' => 'form-control']) !!}
+            {!! Form::date('when_go', old('when_go'), ['class' => 'form-control']) !!}
         </div>
         <div class="form-group">
             <h5>メンバー</h5>

@@ -22,6 +22,13 @@ class ThreadController extends Controller
     }
     
     public function store(Request $request) {
+        $request->validate([
+            'title' => 'required | max:255',
+            'where_go' => 'nullable | max::255',
+            'when_go' => 'nullable | date',
+            'members' => 'nullable | array'
+        ]);
+        
         $new_thread = Thread::create([
             'title' => $request->title,
             'where_go' => $request->where_go,
@@ -38,7 +45,7 @@ class ThreadController extends Controller
     }
     
     public function show($id) {
-        $thread = Thread::findOrFail($id);
+        $thread = \Auth::user()->threads()->findOrFail($id);
         $items = $thread->items;
         $members = $thread->members;
         $messages = $thread->messages;
@@ -55,6 +62,12 @@ class ThreadController extends Controller
     }
     
     public function update($id, Request $request) {
+        $request->validate([
+            'title' => 'required | max:255',
+            'where_go' => 'nullable | max::255',
+            'when_go' => 'nullable | date',
+        ]);
+        
         $thread = Thread::findOrFail($id);
         $thread->title = $request->title;
         $thread->where_go = $request->where_go;

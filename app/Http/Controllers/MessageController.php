@@ -8,6 +8,11 @@ use App\Message;
 class MessageController extends Controller
 {
     public function store(Request $request) {
+        $request->validate([
+            'content' => 'required | max:255',
+            'thread_id' => 'required',
+        ]);
+        
         \Auth::user()->messages()->create([
             'content' => $request->content,
             'thread_id' => $request->thread_id,

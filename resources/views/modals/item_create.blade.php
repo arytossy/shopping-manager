@@ -9,11 +9,11 @@
     {!! Form::open(['route' => 'items.store', 'id' => 'itemCreateForm']) !!}
         <div class="form-group">
             {!! Form::label('name', '品名') !!}
-            {!! Form::text('name', old('name'), ['class' => 'form-control']) !!}
+            {!! Form::text('name', old('name'), ['class' => 'form-control', 'required' => true]) !!}
         </div>
         <div class="form-group">
             {!! Form::label('required_number', '必要数') !!}
-            {!! Form::number('required_number', 1, ['class' => 'form-control']) !!}
+            {!! Form::number('required_number', 1, ['class' => 'form-control', 'required' => true]) !!}
         </div>
         <div class="form-check">
             {!! Form::checkbox('is_shared', 'yes', false, ['class' => 'form-check-input']) !!}
