@@ -75,7 +75,7 @@
         {{-- リスト --}}
         @foreach ($items as $item)
             <div class="row border-bottom py-1">
-                <div class="col-1"><input type="checkbox"></div>
+                <div class="col-1">@include('parts.checkbox')</div>
                 <div class="col-7">
                     {{-- 品目名をタップすると頼んだ人一覧が表示される --}}
                     <a data-toggle="collapse" href="#orders{{ $item->id }}">
