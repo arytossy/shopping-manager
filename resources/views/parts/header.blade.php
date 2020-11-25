@@ -21,7 +21,7 @@
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" data-toggle="dropdown">
                             <img width="30" height="30" src="{{ Auth::user()->avatar }}">
-                            {{ Auth::user()->name }}
+                            <span class="text-truncate">{{ Auth::user()->name }}</span>
                         </a>
                         <div class="dropdown-menu dropdown-menu-right">
                             <a class="dropdown-item" href="{{ route('friends.index') }}">プロフィール</a>

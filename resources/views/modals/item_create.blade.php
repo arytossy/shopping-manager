@@ -19,6 +19,9 @@
             {!! Form::checkbox('is_shared', 'yes', false, ['class' => 'form-check-input']) !!}
             {!! Form::label('is_shared', 'みんなでシェア', ['class' => 'form-check-label']) !!}
         </div>
+        <div class="alert alert-info">
+            「みんなでシェア」にすると、誰でも削除、必要数追加ができる
+        </div>
         {!! Form::hidden('thread_id', $thread->id) !!}
     {!! Form::close() !!}
 

@@ -10,7 +10,7 @@
         {!! Form::open(['route' => 'friends.add', 'id' => 'friendAddForm']) !!}
             <div class="form-group">
                 @foreach ($not_friend_users as $user)
-                    <div class="form-check">
+                    <div class="form-check mt-1">
                         <label class="form-check-label">
                             {!! Form::checkbox('friends[]', $user->id, false, ['class' => 'form-check-input']) !!}
                             <img width="30" height="30" src="{{ $user->avatar }}">

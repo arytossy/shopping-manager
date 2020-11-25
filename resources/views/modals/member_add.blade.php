@@ -13,8 +13,10 @@
                     <div class="form-check">
                         <label class="form-check-label">
                             {!! Form::checkbox('members[]', $friend->id, false, ['class' => 'form-check-input']) !!}
-                            <img width="30" height="30" src="{{ $friend->avatar }}">
-                            {{ $friend->name }}
+                            <div class="d-flex">
+                                <img width="30" height="30" src="{{ $friend->avatar }}">
+                                <span class="pl-2">{{ $friend->name }}</span>
+                            </div>
                         </label>
                     </div>
                 @endforeach

@@ -8,7 +8,7 @@ use App\Thread;
 class ThreadController extends Controller
 {
     public function index() {
-        $threads = \Auth::user()->threads;
+        $threads = \Auth::user()->threads()->orderBy('updated_at', 'desc')->get();
         return view('threads.index', [
             'threads' => $threads,
         ]);
@@ -66,7 +66,7 @@ class ThreadController extends Controller
     public function update($id, Request $request) {
         $request->validate([
             'title' => 'required | max:255',
-            'where_go' => 'nullable | max::255',
+            'where_go' => 'nullable | max:255',
             'when_go' => 'nullable | date',
         ]);
         
