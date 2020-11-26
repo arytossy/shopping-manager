@@ -56,7 +56,7 @@ class ThreadController extends Controller
     
     public function show($id) {
         $thread = \Auth::user()->threads()->findOrFail($id);
-        $items = $thread->items;
+        $items = $thread->items()->orderBy('items.id', 'asc')->get();
         $members = $thread->members;
         $messages = $thread->messages;
         $friends = \Auth::user()->friends()->get();
