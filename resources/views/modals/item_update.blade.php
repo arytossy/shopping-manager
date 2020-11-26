@@ -9,7 +9,7 @@
     {!! Form::open(['method' => 'put', 'id' => 'itemUpdateForm']) !!}
         <div class="form-group">
             {!! Form::label('bought_number', '購入数') !!}
-            {!! Form::number('bought_number', 0, ['class' => 'form-control', 'required' => true, 'min' => 0]) !!}
+            {!! Form::number('bought_number', 0, ['class' => 'form-control', 'required' => true, 'min' => 0, 'max' => 100000]) !!}
         </div>
     {!! Form::close() !!}
 

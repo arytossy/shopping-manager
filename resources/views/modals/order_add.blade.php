@@ -9,7 +9,7 @@
     {!! Form::open(['route' => 'orders.add', 'id' => 'orderAddForm']) !!}
         <div class="form-group">
             {!! Form::label('required_number', '必要数') !!}
-            {!! Form::number('required_number', 1, ['class' => 'form-control', 'required' => true, 'min' => 1]) !!}
+            {!! Form::number('required_number', 1, ['class' => 'form-control', 'required' => true, 'min' => 1, 'max' => 10000]) !!}
         </div>
         {!! Form::hidden('item_id') !!}
     {!! Form::close() !!}
