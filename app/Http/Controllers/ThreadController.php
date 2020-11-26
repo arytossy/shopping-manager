@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 use App\Thread;
 
 class ThreadController extends Controller
@@ -22,12 +23,19 @@ class ThreadController extends Controller
     }
     
     public function store(Request $request) {
-        $request->validate([
-            'title' => 'required | max:255',
-            'where_go' => 'nullable | max:255',
-            'when_go' => 'nullable | date',
-            'members' => 'nullable | array'
+        $validator = Validator::make($request->all(), [
+            'title' => ['required', 'max:255'],
+            'where_go' => ['nullable', 'max:255'],
+            'when_go' => ['nullable', 'date'],
+            'members' => ['nullable', 'array'],
+        ],[
+            'title.required' => 'タイトルは必須です',
+            'title.max' => 'タイトルが長すぎます',
+            'where_go.max' => '場所が長すぎます',
+            'when_go.date' => '日付の書式が不正です',
+            'members.array' => '不正なリクエストです',
         ]);
+        $validator->validate();
         
         $new_thread = Thread::create([
             'title' => $request->title,
@@ -64,13 +72,24 @@ class ThreadController extends Controller
     }
     
     public function update($id, Request $request) {
-        $request->validate([
-            'title' => 'required | max:255',
-            'where_go' => 'nullable | max:255',
-            'when_go' => 'nullable | date',
+        $validator = Validator::make($request->all(), [
+            'title' => ['required', 'max:255'],
+            'where_go' => ['nullable', 'max:255'],
+            'when_go' => ['nullable', 'date'],
+        ],[
+            'title.required' => 'タイトルは必須です',
+            'title.max' => 'タイトルが長すぎます',
+            'where_go.max' => '場所が長すぎます',
+            'when_go.date' => '日付の書式が不正です',
         ]);
+        $validator->validate();
         
         $thread = Thread::findOrFail($id);
+        
+        if (! \Auth::user()->belong_to($thread->id)) {
+            abort(404);
+        }
+        
         $thread->title = $request->title;
         $thread->where_go = $request->where_go;
         $thread->when_go = $request->when_go;

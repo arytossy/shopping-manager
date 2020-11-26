@@ -13,7 +13,7 @@
         </div>
         <div class="form-group">
             {!! Form::label('required_number', '必要数') !!}
-            {!! Form::number('required_number', 1, ['class' => 'form-control', 'required' => true]) !!}
+            {!! Form::number('required_number', 1, ['class' => 'form-control', 'required' => true, 'min' => 1]) !!}
         </div>
         <div class="form-check">
             {!! Form::checkbox('is_shared', 'yes', false, ['class' => 'form-check-input']) !!}

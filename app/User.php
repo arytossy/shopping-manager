@@ -140,4 +140,8 @@ class User extends Authenticatable
         return $this->friendships__to()->where('users.id', $user_id)->exists() || 
                $this->friendships__from()->where('users.id', $user_id)->exists();
     }
+    
+    public function belong_to($thread_id) {
+        return $this->threads()->where('threads.id', $thread_id)->exists();
+    }
 }
