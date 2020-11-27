@@ -12,12 +12,6 @@ class OrderController extends Controller
         $validator = Validator::make($request->all(), [
             'item_id' => ['required'],
             'required_number' => ['required', 'numeric', 'min:1', 'max:10000'],
-        ],[
-            'item_id.required' => '不正なリクエストです',
-            'required_number.required' => '必要数は必須です',
-            'required_number.numeric' => '必要数は数値です',
-            'required_number.min' => '必要数は1以上です',
-            'required_number.max' => '必要数は10000以下です',
         ]);
         $validator->validate();
         
@@ -44,12 +38,6 @@ class OrderController extends Controller
         $validator = Validator::make($request->all(), [
             'item_id' => ['required'],
             'required_number' => ['required', 'numeric', 'min:1', 'max:10000'],
-        ],[
-            'item_id.required' => '不正なリクエストです',
-            'required_number.required' => '必要数は必須です',
-            'required_number.numeric' => '必要数は数値です',
-            'required_number.min' => '必要数は1以上です',
-            'required_number.max' => '必要数は10000以下です',
         ]);
         $validator->validate();
         
@@ -74,9 +62,8 @@ class OrderController extends Controller
     public function destroy(Request $request) {
         $validator = Validator::make($request->all(), [
             'item_id' => ['required'],
-        ],[
-            'item_id.required' => '不正なリクエストです',
         ]);
+        $validator->validate();
         
         $item = Item::find($request->item_id);
         

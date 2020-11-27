@@ -8,6 +8,7 @@ use App\User;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use JD\Cloudder\Facades\Cloudder;
 
 class RegisterController extends Controller
 {
@@ -53,6 +54,7 @@ class RegisterController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'avatar' => ['nullable', 'image'],
         ]);
     }
 
@@ -64,10 +66,29 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        return User::create([
+        if (array_key_exists('avatar', $data)) {
+            $file_path = $data['avatar']->getRealPath();
+            Cloudder::upload($file_path, null, ['folder' => 'shopping_manager']);
+            $public_id = Cloudder::getPublicId();
+            $avatar_url = Cloudder::secureShow($public_id, [
+                'width' => 100,
+                'height' => 100,
+                'crop' => 'fill',
+                'gravity' => 'auto',
+            ]);
+        } else {
+            $public_id = null;
+            $avatar_url = '/images/default-avatar.png';
+        }
+        
+        $user = User::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
+            'avatar' => $avatar_url,
+            'public_id' => $public_id,
         ]);
+        
+        return $user;
     }
 }

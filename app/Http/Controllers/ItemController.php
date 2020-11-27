@@ -13,14 +13,8 @@ class ItemController extends Controller
             'name' => ['required', 'max:255'],
             'thread_id' => ['required'],
             'required_number' => ['required', 'numeric', 'min:1', 'max:10000'],
-        ],[
-            'name.required' => '品名は必須です',
-            'name.max' => '品名が長すぎます',
-            'thread_id.required' => '不正なリクエストです',
-            'required_number.required' => '必要数は必須です',
-            'required_number.numeric' => '必要数は数値です',
-            'required_number.min' => '必要数は1以上です',
-            'required_number.max' => '必要数は10000以下です',
+        ], [] ,[
+            'name' => '品名',
         ]);
         $validator->validate();
         
@@ -42,15 +36,9 @@ class ItemController extends Controller
     }
     
     public function update($id, Request $request) {
-        $validator = Validator::make($request->all(), [
-            'bought_number' => ['required', 'numeric', 'min:0', 'max:100000'],
-        ],[
-            'bought_number.required' => '購入数は必須です',
-            'bought_number.numeric' => '購入数は数値です',
-            'bought_number.min' => '購入数は0以上です',
-            'bought_number.max' => '購入数は100000以下です',
+        $request->validate([
+            'bought_number' => 'required | numeric | min:0 | max:100000',
         ]);
-        $validator->validate();
         
         $item = Item::findOrfail($id);
         

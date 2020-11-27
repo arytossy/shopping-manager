@@ -12,10 +12,6 @@ class MemberController extends Controller
         $validator = Validator::make($request->all(), [
             'thread_id' => ['required'],
             'members' => ['required', 'array'],
-        ],[
-            'thread_id.required' => '不正なリクエストです',
-            'members.required' => 'メンバーに追加するユーザーを選択してください',
-            'members.array' => '不正なリクエストです',
         ]);
         $validator->validate();
         
@@ -38,9 +34,6 @@ class MemberController extends Controller
         $validator = Validator::make($request->all(), [
             'thread_id' => ['required'],
             'user_id' => ['required'],
-        ],[
-            'thread_id.required' => '不正なリクエストです',
-            'user_id.required' => '不正なリクエストです',
         ]);
         $validator->validate();
         
@@ -56,6 +49,10 @@ class MemberController extends Controller
         if (! $result) {
             $validator->errors()->add('user_id', '削除に失敗しました');
             return back()->withErrors($validator)->withInput();
+        }
+        
+        if ($thread->members()->count() == 0) {
+            $thread->delete();
         }
         
         if (\Auth::id() == $request->user_id) {

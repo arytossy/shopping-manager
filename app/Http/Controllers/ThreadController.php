@@ -23,19 +23,12 @@ class ThreadController extends Controller
     }
     
     public function store(Request $request) {
-        $validator = Validator::make($request->all(), [
+        $request->validate([
             'title' => ['required', 'max:255'],
             'where_go' => ['nullable', 'max:255'],
             'when_go' => ['nullable', 'date'],
             'members' => ['nullable', 'array'],
-        ],[
-            'title.required' => 'タイトルは必須です',
-            'title.max' => 'タイトルが長すぎます',
-            'where_go.max' => '場所が長すぎます',
-            'when_go.date' => '日付の書式が不正です',
-            'members.array' => '不正なリクエストです',
         ]);
-        $validator->validate();
         
         $new_thread = Thread::create([
             'title' => $request->title,
@@ -72,17 +65,11 @@ class ThreadController extends Controller
     }
     
     public function update($id, Request $request) {
-        $validator = Validator::make($request->all(), [
+        $request->validate([
             'title' => ['required', 'max:255'],
             'where_go' => ['nullable', 'max:255'],
             'when_go' => ['nullable', 'date'],
-        ],[
-            'title.required' => 'タイトルは必須です',
-            'title.max' => 'タイトルが長すぎます',
-            'where_go.max' => '場所が長すぎます',
-            'when_go.date' => '日付の書式が不正です',
         ]);
-        $validator->validate();
         
         $thread = Thread::findOrFail($id);
         

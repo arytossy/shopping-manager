@@ -13,10 +13,6 @@ class MessageController extends Controller
         $validator = Validator::make($request->all(), [
             'content' => ['required', 'max:255'],
             'thread_id' => ['required'],
-        ],[
-            'content.required' => 'メッセージ内容は必須です',
-            'content.max' => 'メッセージが長すぎます',
-            'thread_id.required' => '不正なリクエストです',
         ]);
         $validator->validate();
         

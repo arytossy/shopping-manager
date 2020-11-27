@@ -358,7 +358,7 @@
         switch (category) {
             case 'member':
                 if (isMyself) {
-                    content = 'このスレッドから退出します！\nよろしいですか？';
+                    content = 'このスレッドから退出します！\n※最後の一人の場合はスレッドごと削除します！\nよろしいですか？';
                 } else {
                     content = `以下のユーザーをこのスレッドから外します！\n${target}\nよろしいですか？`;
                 }

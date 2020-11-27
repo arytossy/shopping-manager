@@ -21,12 +21,10 @@
             {!! Form::label('password_confirmation', 'パスワード確認用') !!}
             {!! Form::password('password_confirmation', ['class' => 'form-control', 'required' => true]) !!}
         </div>
-        {{-- アバター登録（未実装）
         <div class="form-group">
             {!! Form::label('avatar', 'アバター') !!}
-            {!! Form::file('avatar', ['class' => 'form-control']) !!}
+            {!! Form::file('avatar', ['accept' => 'image/*', 'class' => 'form-control-file text-truncate']) !!}
         </div>
-        --}}
         {!! Form::submit('登録', ['class' => 'btn btn-primary btn-block mt-4']) !!}
     {!! Form::close() !!}
 

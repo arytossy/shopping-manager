@@ -27,12 +27,9 @@ class FriendController extends Controller
     }
     
     public function add(Request $request) {
-        Validator::make($request->all(), [
+        $request->validate([
             'friends' => ['required', 'array'],
-        ], [
-            'friends.required' => '友だち追加するユーザーを指定してください',
-            'friends.array' => '不正なリクエストです',
-        ])->validate();
+        ]);
         
         foreach ($request->friends as $str_id) {
             \Auth::user()->send_request_to((int) $str_id);
@@ -44,8 +41,6 @@ class FriendController extends Controller
     public function accept(Request $request) {
         $validator = Validator::make($request->all(), [
             'user_id' => ['required'],
-        ],[
-            'user_id.required' => '不正なリクエストです'
         ]);
         $validator->validate();
         
@@ -62,8 +57,6 @@ class FriendController extends Controller
     public function destroy(Request $request) {
         $validator = Validator::make($request->all(), [
             'user_id' => ['required'],
-        ],[
-            'user_id.required' => '不正なリクエストです'
         ]);
         $validator->validate();
         
