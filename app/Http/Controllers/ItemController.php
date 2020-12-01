@@ -37,7 +37,7 @@ class ItemController extends Controller
     
     public function update($id, Request $request) {
         $request->validate([
-            'bought_number' => 'required | numeric | min:0 | max:100000',
+            'bought_number' => ['required', 'numeric', 'min:0', 'max:100000'],
         ]);
         
         $item = Item::findOrfail($id);
