@@ -21,7 +21,7 @@
         </div>
         <div class="form-check">
             {!! Form::checkbox('is_default', 'yes', false,  ['class' => 'form-check-input']) !!}
-            {!! Form::label('is_default', 'デフォルトアバターにする', ['class' => 'form-check-label']) !!}
+            {!! Form::label('is_default', 'アバターを削除する', ['class' => 'form-check-label']) !!}
         </div>
         {!! Form::submit('更新', ['class' => 'btn btn-success btn-block mt-4']) !!}
     {!! Form::close() !!}

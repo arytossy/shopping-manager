@@ -1,4 +1,4 @@
-<footer class="bg-secondary mt-5 py-3">
+<footer class="bg-secondary py-3">
     <nav class="nav">
         <a class="nav-link text-white-50" href="/">トップ</a>
     </nav>

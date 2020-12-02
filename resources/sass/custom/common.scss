@@ -1,0 +1,34 @@
+body {
+    background-color: #eee;
+
+    * {
+        overflow-wrap: break-word;
+    }
+}
+
+#wrapper {
+    max-width: 450px;
+    min-height: 100vh;
+    margin: 0 auto;
+    background-color: #fff;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+#errorAlert {
+    position: absolute;
+    top: 56px;
+    font-size: 13px;
+}
+
+.btn-wrapper {
+    border: none;
+    background-color: transparent;
+    padding: 0;
+}
+
+.modal-body {
+    overflow-y: scroll;
+    max-height: 50vh;
+}

@@ -7,7 +7,7 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <div class="modal-body overflow-auto" style="max-height: 50vh;">
+      <div class="modal-body">
         {{ $slot }}
       </div>
       <div class="modal-footer">

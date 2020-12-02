@@ -4,9 +4,9 @@
     
     <div class="mx-3 my-3">
         @include('parts.profile')
+        <a class="btn btn-warning text-white" href="{{ route('profile.edit') }}">プロフィールを編集</a>
     </div>
-    
-    
+
     <ul class="nav nav-tabs nav-fill">
         <li class="nav-item">
             <a class="nav-link px-1 {{ Request::routeIs('friends.index') ? 'active' : '' }}" href="{{ route('friends.index') }}">友だち</a>

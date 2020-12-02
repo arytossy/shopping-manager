@@ -37,30 +37,3 @@
     </div>
 
 @endsection
-
-@section('style')
-    #welcome {
-        position: relative;
-        background-image: url('/images/shopping.jpg');
-        background-size: cover;
-        height: 300px;
-    }
-    
-    #welcome::after {
-        content: '';
-        background-color: rgba(0,0,0,0.3);
-        position: absolute;
-        top: 0;
-        right: 0;
-        bottom: 0;
-        left: 0;
-    }
-    
-    #welcome .col {
-        z-index: 2;
-        position: absolute;
-        bottom: 0;
-        text-align: right;
-        color: white;
-    }
-@endsection
