@@ -46,6 +46,13 @@
         </div>
     </div>
     
-    @include('modals.friend_add')
+    {{-- モーダルダイアログ（Vue Component） --}}
+    <div id="vueArea">
+        <friend-add-dialog
+            search_url="{{ route('ajax.users.search') }}"
+            add_url="{{ route('friends.add') }}"
+            delete_url="{{ route('friends.destroy') }}"
+        ></friend-add-dialog>
+    </div>
     
 @endsection

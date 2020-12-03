@@ -28,12 +28,10 @@ class FriendController extends Controller
     
     public function add(Request $request) {
         $request->validate([
-            'friends' => ['required', 'array'],
+            'user_id' => ['required'],
         ]);
         
-        foreach ($request->friends as $str_id) {
-            \Auth::user()->send_request_to((int) $str_id);
-        }
+        \Auth::user()->send_request_to($request->user_id);
         
         return back();
     }

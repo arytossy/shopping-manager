@@ -12,13 +12,7 @@
 */
 
 // トップページ
-Route::get('/', function () {
-    if (Auth::check()) {
-        return redirect()->route('threads.index');
-    } else {
-        return view('welcome');
-    }
-});
+Route::get('/', 'TopController');
 
 // ログイン
 Route::get('login', 'Auth\LoginController@showLoginForm')->name('login');
@@ -56,5 +50,11 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('threads', 'ThreadController')->only(['index', 'create', 'store', 'show', 'update']);
     Route::resource('items', 'ItemController')->only(['store', 'update', 'destroy']);
     Route::resource('messages', 'MessageController')->only(['store', 'destroy']);
+
+    
+    // Ajax用エンドポイント
+    Route::prefix('ajax')->group(function () {
+        Route::post('users/search', 'AjaxController@users_search')->name('ajax.users.search');
+    });
 
 });
