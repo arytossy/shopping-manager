@@ -27,8 +27,8 @@ files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-const vueInstance = new Vue({
-    el: '#vueArea',
+const app = new Vue({
+    el: '#app',
 });
 
 /**

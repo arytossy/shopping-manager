@@ -11,14 +11,16 @@ const mix = require('laravel-mix');
  |
  */
 
-mix.js('resources/js/app.js', 'public/js')
-   .sass('resources/sass/app.scss', 'public/css')
-   .options({
+mix.options({
       processCssUrls: false,
 });
 
 if (mix.inProduction()) {
-   mix.version();
+   mix.js('resources/js/app.js', 'public/assets')
+      .sass('resources/sass/app.scss', 'public/assets')
+      .version();
 } else {
-   mix.browserSync('localhost:8080');
+   mix.js('resources/js/app.js', 'public/assets/dev')
+      .sass('resources/sass/app.scss', 'public/assets/dev')
+      .browserSync('localhost:8080');
 }

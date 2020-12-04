@@ -4,3 +4,8 @@ if (chatScrollInner) chatScrollInner.scrollIntoView(false);
 
 // 上記の処理によって全体のスクロールがずれてしまうのを直す
 $('body').get(0).scrollIntoView(true);
+
+// リクエストが重複してしまうのを防止
+window.onbeforeunload = function () {
+    $('#waitingWrapper').show();
+}
