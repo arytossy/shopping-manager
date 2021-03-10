@@ -24,7 +24,7 @@
             <div class="row border-top py-1">
                 <div class="col-3 pr-0"><strong>メンバー</strong></div>
                 <div class="col-7">
-                    <template v-if="status === 'getting'">
+                    <!-- <template v-if="status === 'getting'">
                         <div class="text-center my-5">
                             <div class="spinner-border" role="status">
                                 <span class="sr-only">取得中...</span>
@@ -51,8 +51,15 @@
                                 </div>
                             </div>
                         </div>
-                    </template>
-                    
+                    </template> -->
+                    <thread-members
+                        :thread-id="id"
+                        :get-members-url="getMembersUrl"
+                        :get-friends-url="getFriendsUrl"
+                        :add-members-url="addMembersUrl"
+                        :delete-members-url="deleteMembersUrl"
+                        :friend-index-url="friendIndexUrl"
+                    ></thread-members>
                 </div>
                 <div class="col-2">
                     <a data-toggle="modal" href="#memberAddDialog">
@@ -72,64 +79,67 @@ export default {
         'whereGo',
         'whenGo',
         'getMembersUrl',
-        'deleteMembersUrl'
+        'getFriendsUrl',
+        'addMembersUrl',
+        'deleteMembersUrl',
+        'friendIndexUrl'
     ],
     data: function () {
         return {
             currentTitle: this.title,
             currentWhereGo: this.whereGo,
             currentWhenGo: changeFormat(this.whenGo),
-            members: null,
-            status: 'getting' // getting done failed のいずれか
+            // members: null,
+            // status: 'getting' // getting done failed のいずれか
         }
     },
     methods: {
-        deleteMember(member) {
-            if (window.delete_check('member', member.name)) {
-                axios.post(this.deleteMembersUrl, {
-                    thread_id: this.id,
-                    user_id: member.id,
-                })
-                .then((res) => {
-                    console.log('member was deleted successful.');
-                })
-                .catch((e) => {
-                    console.error(`ajax failed. ${e.response.data.message}`);
-                });
-            }
-        },
+        // deleteMember(member) {
+        //     if (window.delete_check('member', member.name)) {
+        //         axios.post(this.deleteMembersUrl, {
+        //             thread_id: this.id,
+        //             user_id: member.id,
+        //         })
+        //         .then((res) => {
+        //             console.log('member was deleted successful.');
+        //         })
+        //         .catch((e) => {
+        //             console.error(`ajax failed. ${e.response.data.message}`);
+        //         });
+        //     }
+        // },
     },
     mounted() {
-        axios.get(this.getMembersUrl, {
-            params: {
-                thread_id: this.id,
-            },
-        })
-        .then((res) => {
-            this.status = 'done';
-            this.members = res.data;
-        })
-        .catch((e) => {
-            this.status = 'failed'
-            console.error(`ajax failed. ${e.response.data.message}`)
-        });
+        // axios.get(this.getMembersUrl, {
+        //     params: {
+        //         thread_id: this.id,
+        //     },
+        // })
+        // .then((res) => {
+        //     this.status = 'done';
+        //     this.members = res.data;
+        // })
+        // .catch((e) => {
+        //     this.status = 'failed'
+        //     console.error(`ajax failed. ${e.response.data.message}`)
+        // });
 
         Echo.private('thread.' + this.id)
-            .listen('MemberDeleted', (event) => {
-                let members = this.members.slice();
-                members = members.filter((m) => {
-                    return m.id !== event.member.id;
-                });
-                this.members = members;
-            })
-            .listen('MemberAdded', (event) => {
-                let members = this.members.slice();
-                members = members.concat(event.members);
-                members.sort((a, b) => {
-                    return a.id - b.id;
-                });
-                this.members = members;
-            })
+            // .listen('MemberDeleted', (event) => {
+            //     let members = this.members.slice();
+            //     members = members.filter((m) => {
+            //         return m.id !== event.member.id;
+            //     });
+            //     this.members = members;
+            // })
+            // .listen('MemberAdded', (event) => {
+            //     let members = this.members.slice();
+            //     members = members.concat(event.members);
+            //     members.sort((a, b) => {
+            //         return a.id - b.id;
+            //     });
+            //     this.members = members;
+            // })
             .listen('ThreadDetailUpdated', (event) => {
                 this.currentTitle = event.thread.title;
                 this.currentWhereGo = event.thread.where_go;

@@ -96,13 +96,19 @@ class FriendController extends Controller
         return back();
     }
 
-    public function get_not_member_friends(Request $request) {
-        $request->validate([
-            'thread_id' => ['required', new HasCurrentUser],
-        ]);
+    /**
+     * ※要検討※
+     * スレッド詳細ページのメンバー追加用
+     */
+    public function get_friends(/*Request $request*/) {
+        // $request->validate([
+        //     'thread_id' => ['required', new HasCurrentUser],
+        // ]);
 
-        $members = Thread::find($request->thread_id)->members;
-        $not_member_friends = \Auth::user()->friends()->whereNotIn('users.id', $members->modelKeys())->get();
-        return $not_member_friends;
+        // $members = Thread::find($request->thread_id)->members;
+        // $not_member_friends = \Auth::user()->friends()->whereNotIn('users.id', $members->modelKeys())->get();
+        // return $not_member_friends;
+
+        return \Auth::user()->friends()->get();
     }
 }

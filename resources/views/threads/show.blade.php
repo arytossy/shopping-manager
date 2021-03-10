@@ -62,7 +62,10 @@
         where-go="{{ $thread->where_go }}"
         when-go="{{ $thread->when_go }}"
         get-members-url="{{ route('members.index') }}"
+        get-friends-url="{{ route('friends.get') }}"
+        add-members-url="{{ route('members.add') }}"
         delete-members-url="{{ route('members.destroy') }}"
+        friend-index-url="{{ route('friends.index') }}"
     ></thread-detail>
     
     {{-- <section id="itemList">
@@ -95,12 +98,12 @@
         update-thread-url="{{ route('threads.update', $thread->id) }}"
     ></thread-edit-dialog>
 
-    <member-add-dialog
+    {{-- <member-add-dialog
         thread-id="{{ $thread->id }}"
         get-friends-url="{{ route('friends.get') }}"
         friend-index-url="{{ route('friends.index') }}"
         add-members-url="{{ route('members.add') }}"
-    ></member-add-dialog>
+    ></member-add-dialog> --}}
 
 @endsection
 
