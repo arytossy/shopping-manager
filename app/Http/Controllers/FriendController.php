@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Rules\HasCurrentUser;
+use App\Thread;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\User;
@@ -28,7 +30,20 @@ class FriendController extends Controller
     
     public function add(Request $request) {
         $request->validate([
-            'user_id' => ['required'],
+            'user_id' => [
+                'bail',
+                'required',
+                function ($attribute, $value, $fail) {
+                    if (!User::find($value)) {
+                        $fail('存在しないユーザーです');
+                    }
+                },
+                function ($attribute, $value, $fail) {
+                    if (\Auth::user()->exists_friendship($value)) {
+                        $fail('既に送信済みです');
+                    }
+                },
+            ],
         ]);
         
         \Auth::user()->send_request_to($request->user_id);
@@ -38,7 +53,20 @@ class FriendController extends Controller
     
     public function accept(Request $request) {
         $validator = Validator::make($request->all(), [
-            'user_id' => ['required'],
+            'user_id' => [
+                'bail',
+                'required',
+                function ($attribute, $value, $fail) {
+                    if (!User::find($value)) {
+                        $fail('存在しないユーザーです');
+                    }
+                },
+                function ($attribute, $value, $fail) {
+                    if (\Auth::user()->exists_friendship($value)) {
+                        $fail('既に送信済みです');
+                    }
+                },
+            ],
         ]);
         $validator->validate();
         
@@ -66,5 +94,15 @@ class FriendController extends Controller
         }
         
         return back();
+    }
+
+    public function get_not_member_friends(Request $request) {
+        $request->validate([
+            'thread_id' => ['required', new HasCurrentUser],
+        ]);
+
+        $members = Thread::find($request->thread_id)->members;
+        $not_member_friends = \Auth::user()->friends()->whereNotIn('users.id', $members->modelKeys())->get();
+        return $not_member_friends;
     }
 }

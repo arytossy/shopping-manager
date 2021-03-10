@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\ThreadUpdated;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Item;
@@ -30,6 +31,8 @@ class OrderController extends Controller
             $validator->errors()->add('user', '既に頼んでいます');
             return back()->withErrors($validator)->withInput();
         }
+
+        event(new ThreadUpdated($item->thread));
         
         return back();
     }
@@ -55,6 +58,8 @@ class OrderController extends Controller
             $validator->errors()->add('item_id', '対象品目が不正です');
             return back()->withErrors($validator)->withInput();
         }
+
+        event(new ThreadUpdated($item->thread));
         
         return back();
     }
@@ -79,6 +84,8 @@ class OrderController extends Controller
             $validator->errors()->add('item_id', 'そもそも頼んでいません');
             return back()->withErrors($validator)->withInput();
         }
+
+        event(new ThreadUpdated($item->thread));
         
         return back();
     }

@@ -49,9 +49,9 @@
     {{-- モーダルダイアログ（Vue Component） --}}
     <div id="vueArea">
         <friend-add-dialog
-            search_url="{{ route('ajax.users.search') }}"
-            add_url="{{ route('friends.add') }}"
-            delete_url="{{ route('friends.destroy') }}"
+            search-url="{{ route('ajax.users.search') }}"
+            add-url="{{ route('friends.add') }}"
+            delete-url="{{ route('friends.destroy') }}"
         ></friend-add-dialog>
     </div>
     

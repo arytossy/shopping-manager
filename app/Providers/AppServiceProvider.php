@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use Illuminate\Http\Resources\Json\Resource;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -26,5 +27,10 @@ class AppServiceProvider extends ServiceProvider
         if (! \App::environment('local')) {
             \URL::forceScheme('https');
         }
+
+        /**
+         * APIリソースを'data'でラップしない
+         */
+        Resource::withoutWrapping();
     }
 }

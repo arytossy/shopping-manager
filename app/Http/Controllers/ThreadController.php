@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\ThreadDetailUpdated;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Thread;
@@ -51,7 +52,7 @@ class ThreadController extends Controller
         $thread = \Auth::user()->threads()->findOrFail($id);
         $items = $thread->items()->orderBy('items.id', 'asc')->get();
         $members = $thread->members;
-        $messages = $thread->messages;
+        $messages = $thread->messages->load('user');
         $friends = \Auth::user()->friends()->get();
         $not_member_friends = $friends->except($members->modelKeys());
         
@@ -82,7 +83,9 @@ class ThreadController extends Controller
         $thread->when_go = $request->when_go;
         
         $thread->save();
+
+        event(new ThreadDetailUpdated($thread));
         
-        return back();
+        return $thread;
     }
 }

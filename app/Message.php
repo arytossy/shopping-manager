@@ -12,6 +12,20 @@ class Message extends Model
     protected $fillable = [
         'content', 'thread_id', 'said_by',
     ];
+
+    /**
+     * ユーザーに見せたくないカラム
+     */
+    protected $hidden = [
+        'said_by',
+    ];
+
+    /**
+     * 全クエリ共通でロードするリレーション
+     */
+    protected $with = [
+        'user',
+    ];
     
     /**
      * リレーション定義

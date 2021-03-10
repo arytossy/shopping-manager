@@ -2,28 +2,42 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\ItemUpdated;
+use App\Events\ThreadUpdated;
+use App\Http\Resources\Item as ItemResource;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Item;
+use App\Rules\HasCurrentUser;
+use App\Thread;
 
 class ItemController extends Controller
 {
+    /**
+     * アイテム一覧取得
+     * @return JSON
+     */
+    public function index(Request $request) {
+        $request->validate([
+            'thread_id' => ['required', new HasCurrentUser],
+        ]);
+
+        $items = Thread::find($request->thread_id)->items;
+
+        return ItemResource::collection($items);
+    }
+
     public function store(Request $request) {
-        $validator = Validator::make($request->all(), [
+        Validator::make($request->all(), [
             'name' => ['required', 'max:255'],
-            'thread_id' => ['required'],
+            'thread_id' => ['required', new HasCurrentUser],
             'required_number' => ['required', 'numeric', 'min:1', 'max:10000'],
         ], [] ,[
             'name' => '品名',
-        ]);
-        $validator->validate();
+        ])
+        ->validate();
         
-        if (! \Auth::user()->belong_to($request->thread_id)) {
-            $validator->errors()->add('thread_id', '対象スレッドが不正です');
-            return back()->withErrors($validator)->withInput();
-        }
-        
-        \Auth::user()->items()->create([
+        $new_item = \Auth::user()->items()->create([
             'name' => $request->name,
             'is_shared' => $request->is_shared ? true : false,
             'bought_number' => 0,
@@ -31,25 +45,30 @@ class ItemController extends Controller
         ],[
             'required_number' => $request->required_number,
         ]);
+
+        event(new ThreadUpdated($new_item->thread));
         
         return back();
     }
     
     public function update($id, Request $request) {
+        $item = Item::findOrfail($id);
+
+        if (! \Auth::user()->belong_to($item->thread->id)) {
+            abort(404);
+        }
+
         $request->validate([
             'bought_number' => ['required', 'numeric', 'min:0', 'max:100000'],
         ]);
         
-        $item = Item::findOrfail($id);
-        
-        if (! \Auth::user()->belong_to($item->thread->id)) {
-            abort(404);
-        }
-        
         $item->bought_number = $request->bought_number;
         $item->save();
+
+        event(new ThreadUpdated($item->thread));
+        event(new ItemUpdated($item));
         
-        return back();
+        return $item;
     }
     
     public function destroy($id) {
@@ -61,6 +80,8 @@ class ItemController extends Controller
         }
         
         $item->delete();
+
+        event(new ThreadUpdated($item->thread));
         
         return back();
     }

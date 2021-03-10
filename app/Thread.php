@@ -33,17 +33,25 @@ class Thread extends Model
      */
     public function add_members($user_ids) {
         // 有効かつメンバー未登録のユーザーIDに絞り込み
-        $new_member_ids = array_unique(array_filter($user_ids, function ($id) {
-            return User::where('id', $id)->exists()
-                        && !$this->members()->where('users.id', $id)->exists();
-        }));
+        $new_member_ids = array_unique(
+            array_filter($user_ids, function ($id) {
+                return (
+                    User::where('id', $id)->exists()
+                    &&
+                    !$this->members()->where('users.id', $id)->exists()
+                );
+            })
+        );
         
         // メンバー登録
         if (count($new_member_ids)) {
             $this->members()->attach($new_member_ids);
-            return count($new_member_ids);
+            foreach ($new_member_ids as $id) {
+                $new_members[] = User::find($id);
+            }
+            return $new_members;
         } else {
-            return 0;
+            return null;
         }
     }
     
@@ -53,14 +61,11 @@ class Thread extends Model
      * @return boolean
      */
     public function delete_member($user_id) {
-        if (User::where('id', $user_id)->exists()
-                && $this->members()->where('users.id', $user_id)->exists()) {
-                    
+        if ($this->members()->where('users.id', $user_id)->exists()) {  
             $this->members()->detach($user_id);
-            return true;
-            
+            return User::find($user_id);
         } else {
-            return false;
+            return null;
         }
     }
 }

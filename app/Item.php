@@ -12,6 +12,13 @@ class Item extends Model
     protected $fillable = [
         'name', 'is_shared', 'bought_number', 'thread_id',
     ];
+
+    /**
+     * 全クエリ共通でロードするリレーション
+     */
+    protected $with = [
+        'users',
+    ];
     
     /**
      * リレーション定義

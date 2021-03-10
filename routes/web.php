@@ -34,9 +34,11 @@ Route::middleware(['auth'])->group(function () {
         Route::post('add', 'FriendController@add')->name('friends.add');
         Route::post('accept', 'FriendController@accept')->name('friends.accept');
         Route::post('destroy', 'FriendController@destroy')->name('friends.destroy');
+        Route::get('get', 'FriendController@get_not_member_friends')->name('friends.get');
     });
     // メンバー
     Route::prefix('members')->group(function () {
+        Route::get('', 'MemberController@index')->name('members.index');
         Route::post('add', 'MemberController@add')->name('members.add');
         Route::post('destroy', 'MemberController@destroy')->name('members.destroy');
     });
@@ -48,8 +50,8 @@ Route::middleware(['auth'])->group(function () {
     });
     // リソース
     Route::resource('threads', 'ThreadController')->only(['index', 'create', 'store', 'show', 'update']);
-    Route::resource('items', 'ItemController')->only(['store', 'update', 'destroy']);
-    Route::resource('messages', 'MessageController')->only(['store', 'destroy']);
+    Route::resource('items', 'ItemController')->only(['index', 'store', 'update', 'destroy']);
+    Route::resource('messages', 'MessageController')->only(['index', 'store', 'destroy']);
 
     
     // Ajax用エンドポイント

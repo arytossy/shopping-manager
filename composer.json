@@ -14,7 +14,8 @@
         "jrm2k6/cloudder": "^0.6.0",
         "laravel/framework": "^6.20",
         "laravel/tinker": "^2.5",
-        "laravelcollective/html": "^6.0"
+        "laravelcollective/html": "^6.0",
+        "pusher/pusher-php-server": "^4.1"
     },
     "require-dev": {
         "facade/ignition": "^1.16.4",

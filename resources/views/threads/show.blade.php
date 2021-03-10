@@ -1,7 +1,8 @@
 @extends('layouts.app')
 
 @section('content')
-    
+
+    {{--
     <section id="threadDetail">
         <div id="threadDetailHeader" class="row">
             <div class="col-10">
@@ -10,7 +11,6 @@
                 </a>
             </div>
             <div class="col-2">
-                {{-- スレッド詳細編集アイコン --}}
                 <a data-toggle="modal" href="#threadEditDialog">
                     <i class="fas fa-edit"></i>
                 </a>
@@ -47,7 +47,6 @@
                     @endforeach
                 </div>
                 <div class="col-2">
-                    {{-- メンバー追加アイコン --}}
                     <a data-toggle="modal" href="#memberAddDialog">
                         <i class="fas fa-user-plus"></i>
                     </a>
@@ -55,24 +54,59 @@
             </div>
         </div>
     </section>
+    --}}
+
+    <thread-detail
+        id="{{ $thread->id }}"
+        title="{{ $thread->title }}"
+        where-go="{{ $thread->where_go }}"
+        when-go="{{ $thread->when_go }}"
+        get-members-url="{{ route('members.index') }}"
+        delete-members-url="{{ route('members.destroy') }}"
+    ></thread-detail>
     
-    <section id="itemList">
+    {{-- <section id="itemList">
         @include('parts.item_list')
-    </section>
+    </section> --}}
+
+    <item-list
+        thread-id="{{ $thread->id }}"
+        get-items-url="{{ route('items.index') }}"
+        update-item-url="{{ route('items.update', '') }}"
+    ></item-list>
     
-    <section id="chatArea">
-        @include('parts.chat_area')
-    </section> 
-    
-    @include('modals.thread_edit')
+    <chat-area
+        my-id="{{ Auth::id() }}"
+        thread-id="{{ $thread->id }}"
+        get-url="{{ route('messages.index') }}"
+        delete-url="{{ route('messages.destroy', '') }}"
+    ></chat-area>
+
     @include('modals.item_create')
     @include('modals.item_update')
     @include('modals.order_add')
     @include('modals.order_change')
-    @include('modals.member_add')
+    
+    <thread-edit-dialog
+        thread-id="{{ $thread->id }}"
+        title="{{ $thread->title }}"
+        where-go="{{ $thread->where_go }}"
+        when-go="{{ date('Y-m-d', strtotime($thread->when_go)) }}"
+        update-thread-url="{{ route('threads.update', $thread->id) }}"
+    ></thread-edit-dialog>
+
+    <member-add-dialog
+        thread-id="{{ $thread->id }}"
+        get-friends-url="{{ route('friends.get') }}"
+        friend-index-url="{{ route('friends.index') }}"
+        add-members-url="{{ route('members.add') }}"
+    ></member-add-dialog>
 
 @endsection
 
 @section('message_sender')
-    @include('parts.message_sender')
+    <message-sender
+        send-url="{{route('messages.store')}}"
+        thread-id="{{$thread->id}}"
+    ></message-sender>
 @endsection

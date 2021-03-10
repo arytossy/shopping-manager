@@ -20,12 +20,12 @@ class User extends Authenticatable
     ];
 
     /**
-     * The attributes that should be hidden for arrays.
+     * The attributes that should be visible for arrays.
      *
      * @var array
      */
-    protected $hidden = [
-        'password', 'remember_token',
+    protected $visible = [
+        'id', 'name', 'avatar',
     ];
 
     /**
@@ -141,6 +141,10 @@ class User extends Authenticatable
                $this->friendships__from()->where('users.id', $user_id)->exists();
     }
     
+    /**
+     * スレッドに所属しているかどうか
+     * @return boolean
+     */
     public function belong_to($thread_id) {
         return $this->threads()->where('threads.id', $thread_id)->exists();
     }
